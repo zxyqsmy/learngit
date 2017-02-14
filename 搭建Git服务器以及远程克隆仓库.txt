@@ -1,0 +1,58 @@
+问题：
+Cloning into 'git'...
+ssh: connect to host 10.10.10.136 port 22: Connection refused
+fatal: The remote end hung up unexpectedly
+解决：检查系统是否安装了openssh-server(服务器与客户端均需要安装)，若没有安装则使用命令：
+sudo apt-get install openssh-server 
+进行安装
+
+问题：
+zxy@ubuntu:~/learngit$ git add testgit.txt
+fatal: Not a git repository (or any of the parent directories): .git
+解决：
+zxy@ubuntu:~/learngit$ git init（初始化）
+
+问题：
+fatal: Invalid gitfile format: testgit.txt
+fatal: The remote end hung up unexpectedly
+
+解决：
+所在目录不对，应该在sample.git目录下
+
+问题：
+zxy@ubuntu:~/learngit/sample$ git push -u origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@10.10.10.136:gitserver/sample.git'
+解决：
+这是因为在本地没有文件可以推送，使用git add <filename>  和git commit -m "write some describe info"  之后在推送
+
+
+
+Note：使用
+      sudo service ssh status   可以查看ssh服务的状态，若服务没有开启，则使用命令
+      sudo service ssh start     开启服务
+
+
+
+在服务器端创建一个Git仓库：先要选定一个目录作为Git仓库，假定是gitserver/sample.git,
+则在gitserver目录下输入命令: 
+  sudo git init --bare sample.git  就会创建一个裸仓库，因为服务器上的Git仓库纯粹是为了共享，
+所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。然后，把owner改为git：
+ sudo chown -R git:git sample.git
+
+远程克隆仓库：
+git clone git@10.10.10.136:gitserver/sample.git
+之后出现提示信息：
+Cloning into 'sample'...
+warning: You appear to have cloned an empty repository.
+则代表克隆成功
+
+
+
+
+
+
+
+
+
+
